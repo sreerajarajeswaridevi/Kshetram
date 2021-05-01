@@ -34,10 +34,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void configureWebview(WebView web){
-        web.loadUrl("https://www.sreerajarajeswaridevi.org/android_app/");
         WebSettings webSettings = web.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowFileAccess(true);
+        webSettings.setLoadsImagesAutomatically(true);
+
+        webSettings.setSupportZoom(true);
+        System.out.println("hello" + web.getScale());
+
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.ECLAIR) {
             try {
                 Log.d(TAG, "Enabling HTML5-Features");
@@ -59,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 Method m6 = WebSettings.class.getMethod("setAppCacheEnabled", new Class[]{Boolean.TYPE});
                 m6.invoke(webSettings, Boolean.TRUE);
 
+                webSettings.setLoadWithOverviewMode(true);
+                webSettings.setUseWideViewPort(true);
+                web.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+
                 Log.d(TAG, "Enabled HTML5-Features");
             }
             catch (NoSuchMethodException e) {
@@ -72,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         web.addJavascriptInterface(new WebAppBridge(this), "Android");
+        web.loadUrl("https://www.sreerajarajeswaridevi.org/android_app/");
     }
 
     @SuppressLint("SetJavaScriptEnabled")
